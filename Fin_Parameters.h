@@ -1,0 +1,8 @@
+#define MAX_MOTOR_VOLTAGE 12.0
+
+#define HX_DOUT_PIN 21
+#define HX_SCK_PIN 22
+
+#define L298N_DIR1_PIN 8
+#define L298N_DIR2_PIN 9
+#define L298N_ENA_PIN 10
