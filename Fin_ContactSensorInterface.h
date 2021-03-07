@@ -8,6 +8,7 @@ public:
 	}
 
 	void tare(int times=10) {
+		Serial.println("taring contact sensor");
 		long sum = 0;
 		for (byte i = 0; i < times; i++) {
 			sum += readRaw();

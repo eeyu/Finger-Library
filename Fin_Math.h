@@ -11,4 +11,12 @@ float fbound(float x, float min, float max) {
 	return x;
 };
 
+float fixedAbs(float x) {
+	if (x < 0) {
+		return -x;
+	} else {
+		return x;
+	}
+}
+
 #endif

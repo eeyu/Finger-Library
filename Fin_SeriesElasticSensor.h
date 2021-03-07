@@ -3,6 +3,7 @@
 
 #include "Fin_TorqueSensorInterface.h"
 #include "Fin_ContactSensorInterface.h"
+#include  "Fin_Parameters.h"
 
 class SeriesElasticSensor : public TorqueSensor {
 public:
@@ -31,7 +32,6 @@ public:
 private:
 	byte read_pin;
 
-	const float ANALOG_READ_SCALE = 1024.0;
 };
 
 

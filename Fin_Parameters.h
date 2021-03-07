@@ -6,3 +6,10 @@
 #define L298N_DIR1_PIN 8
 #define L298N_DIR2_PIN 9
 #define L298N_ENA_PIN 10
+
+#define ANALOG_WRITE_SCALE 255.0
+#define ANALOG_READ_SCALE 1024.0
+
+#define POT_READ_PIN 15
+
+

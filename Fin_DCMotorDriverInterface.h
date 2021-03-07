@@ -1,6 +1,8 @@
 #ifndef __FIN_MOTORDRIVERSW__
 #define __FIN_MOTORDRIVERSW__
 
+#include "Fin_Math.h"
+
 class MotorDriver {
 public:
 	MotorDriver() {
@@ -16,11 +18,18 @@ public:
     void sendVoltageCommand(float voltage) {
     	voltage = fbound(voltage, -max_voltage, max_voltage);
 
-      	if (voltage * direction < 0) {
+      	if (!directionIsConsistentWithVoltage(voltage)) {
     		switchDirection();
       	}
 
+      	// Serial.print(voltage); Serial.print(" ");
+       //  Serial.print(direction); Serial.print(" ");
+
         writeVoltage(voltage);
+    }
+
+    bool directionIsConsistentWithVoltage(float voltage) {
+    	return voltage * direction > 0;
     }
 
     float getMaxVoltage() {
@@ -34,21 +43,22 @@ protected:
 
 	void switchDirection() {
       	stop();
-    	if (direction == Direction1) {
+    	if (direction == direction1) {
     		switchToDirection2();
-    		direction = Direction2;
+    		direction = direction2;
     	} else {
     		switchToDirection1();
-    		direction = Direction1;
+    		direction = direction1;
     	}
     }
 
 	float max_voltage;
 
 private:
-	enum Direction{Direction1, Direction2};
+	const int direction1 = 1;
+	const int direction2 = -1;
 
-    Direction direction; // THe direction the motor is moving in
+	int direction = direction1;
 };
 
 #endif

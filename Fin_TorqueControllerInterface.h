@@ -43,8 +43,16 @@ public:
 		if (control_only_when_contacting && !contact_sensor_ref->isContacting()) {
 			return NO_CONTACT_RESPONSE;
 		} else {
-			return fbound(control_response, max_response, -max_response);
+			return fbound(control_response, -max_response, max_response);
 		}
+	}
+
+	float getMeasuredTorque() {
+		return torque_sensor_ref->getTorqueNm();
+	}
+
+	float getTorqueError() {
+		return torque_error;
 	}
 
 

@@ -7,19 +7,14 @@ public:
 
 	}
 
-	void tare(int times=10) {
-		long sum = 0;
-		for (byte i = 0; i < times; i++) {
-			sum += readRaw();
-			delay(0);
-		}
-		float average = sum/times;
-		raw_offset = average;
-		is_tared = true;
-	}
+	virtual void tare(int times=10) = 0;
 
 	bool isTared() {
 		return is_tared;
+	}
+
+	void setTared() {
+		is_tared = true;
 	}
 
 	virtual float getTorqueNm() = 0;

@@ -3,6 +3,7 @@
 
 #include "Fin_DCMotorDriverInterface.h"
 #include "Fin_Math.h"
+#include "Fin_Parameters.h"
 
 class L298NMotorDriver : public MotorDriver {
 public:
@@ -17,6 +18,9 @@ public:
         pinMode(ENA, OUTPUT);
         pinMode(DIR1, OUTPUT);
         pinMode(DIR2, OUTPUT);
+
+        stop();
+        switchToDirection1();
     }
 
     void stop() {
@@ -24,8 +28,6 @@ public:
     }
 
 private:
-    const float ANALOG_WRITE_MAXIMUM = 256.0;
-
     int ENA;
     int DIR1;
     int DIR2;
@@ -41,7 +43,7 @@ private:
     }
 
     void writeVoltage(float voltage) {
-        analogWrite(ENA, (int)(fabs(voltage)/getMaxVoltage() * ANALOG_WRITE_MAXIMUM));
+        analogWrite(ENA, (int)(fabs(voltage)/getMaxVoltage() * ANALOG_WRITE_SCALE));
     }
 };
 
