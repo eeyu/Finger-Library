@@ -19,7 +19,8 @@ struct PIDGains {
 class PIDController {
 public:
 	PIDController() {
-
+		dt_timer.reset();
+		dt_timer.usePrecision();
 	}
 
 	void bindErrorReference(float *nerror_ref) {

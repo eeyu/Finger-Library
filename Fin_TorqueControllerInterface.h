@@ -4,6 +4,7 @@
 #include "Fin_PIDController.h"
 #include "Fin_TorqueSensorInterface.h"
 #include "Fin_ContactSensorInterface.h"
+#include "Fin_Math.h"
 
 class TorqueController {
 public:
@@ -29,6 +30,14 @@ public:
 	void shouldOnlyControlWhenContacting(bool should) {
 		control_only_when_contacting = should;
 	}
+
+	void setUpperDeadbandNm(float up_deadband) {
+		upper_deadband = up_deadband;
+	}
+
+	void setLowerDeadbandNm(float low_deadband) {
+		lower_deadband = low_deadband;
+	}
 // Operation
 	void setDesiredTorque(float ndesired_torque) {
 		desired_torque = ndesired_torque;
@@ -36,8 +45,9 @@ public:
 
 	float stepAndGet() {
 		// issue: should PID integrator be updated when control is bypassed?
-		float measured_torque = torque_sensor_ref->getTorqueNm();
+		float measured_torque = getMeasuredTorque();
 		torque_error = desired_torque - measured_torque;
+		torque_error = -limitErrorByDeadband(-torque_error); // frames are weird and unintuitive....need to update everything to be consistent
 		float control_response = controller.stepAndGet();
 
 		if (control_only_when_contacting && !contact_sensor_ref->isContacting()) {
@@ -47,15 +57,13 @@ public:
 		}
 	}
 
-	float getMeasuredTorque() {
+	virtual float getMeasuredTorque() {
 		return torque_sensor_ref->getTorqueNm();
 	}
 
 	float getTorqueError() {
 		return torque_error;
 	}
-
-
 
 protected:
 	virtual void bindSensorReferences() = 0;
@@ -72,6 +80,20 @@ private:
 	bool control_only_when_contacting = false;
 
 	const float NO_CONTACT_RESPONSE = 0;
+
+	float upper_deadband = 0;
+	float lower_deadband = 0;
+
+	float limitErrorByDeadband(float error) {
+		if (error < lower_deadband) {
+			error -= lower_deadband;
+		} else if (within(error, lower_deadband, upper_deadband)) {
+			error = 0;
+		} else {
+			error -= upper_deadband;
+		}
+		return error; 
+	}
 };
 
 #endif

@@ -19,4 +19,15 @@ float fixedAbs(float x) {
 	}
 }
 
+bool within(float x, float low, float high) {
+	if (x > low && x < high) {
+		return true;
+	} 
+	return false;
+}
+
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 #endif

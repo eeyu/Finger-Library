@@ -28,10 +28,6 @@ public:
         writeVoltage(voltage);
     }
 
-    bool directionIsConsistentWithVoltage(float voltage) {
-    	return voltage * direction > 0;
-    }
-
     float getMaxVoltage() {
     	return max_voltage;
     }
@@ -59,6 +55,10 @@ private:
 	const int direction2 = -1;
 
 	int direction = direction1;
+
+    bool directionIsConsistentWithVoltage(float voltage) {
+        return voltage * direction > 0;
+    }
 };
 
 #endif
