@@ -32,11 +32,34 @@ public:
 	}
 
 // usage
+	void step() {
+		if (torque_sensor_HW.is_ready()) {
+			float kg_reading = torque_sensor_HW.get_units();
+			float torque_Nm = kg_reading * GRAVITY * mounting_length_mm / 1000.0;
+			last_reading = torque_Nm;
+		}
+	}
+
 	float getTorqueNm() {
-		float kg_reading = torque_sensor_HW.get_units();
-		float torque_Nm = kg_reading * GRAVITY * mounting_length_mm / 1000.0;
-		last_reading = torque_Nm;
-		return torque_Nm;
+		if (torque_sensor_HW.is_ready()) {
+			float kg_reading = torque_sensor_HW.get_units();
+			float torque_Nm = kg_reading * GRAVITY * mounting_length_mm / 1000.0;
+			last_reading = torque_Nm;
+			return torque_Nm;
+		} else {
+			return last_reading;
+		}
+		
+	}
+
+	float getForceN() {
+		// if (torque_sensor_HW.is_ready()) {
+			float kg_reading = torque_sensor_HW.get_units();
+			float forceN = kg_reading * GRAVITY;
+			return forceN;
+		// } else {
+		// 	return last_force;
+		// }
 	}
 
 	bool isContacting() {
@@ -54,13 +77,14 @@ private:
 	float mounting_length_mm = 80;
 
 	const int NUM_TARE_READING = 20;
-	const int KG_SCALE = 398.f;
+	const int KG_SCALE = 399000.f;
 	const int GRAVITY = 9.81;
 
 	const float DEFAULT_CONTACT_THRESH_NM = 10.f;
 	float contact_threshold_Nm = DEFAULT_CONTACT_THRESH_NM;
 
 	float last_reading = 0;
+	float last_force = 0;
 
 	float getLastReading() {
 		return last_reading;

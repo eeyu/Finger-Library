@@ -26,6 +26,11 @@ protected:
 		return raw_offset;
 	}
 
+	void setTareOffset(float offset) {
+		raw_offset = offset;
+		setTared();
+	}
+
 private:
 	float raw_offset = 0;
 
